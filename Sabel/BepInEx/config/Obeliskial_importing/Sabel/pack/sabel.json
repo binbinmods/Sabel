@@ -1,0 +1,15 @@
+{
+    "Card0": "sufferermaskofpain",
+    "Card1": "repairarmor",
+    "Card2": "holyslash",
+    "Card3": "recklesscharge",
+    "Card4": "entrench",
+    "Card5": "",
+    "CardSpecial0": "",
+    "CardSpecial1": "",
+    "PackClass": "warrior",
+    "PackID": "sabel",
+    "PackName": "Sabel",
+    "PerkList": [],
+    "RequiredClass": "sufferer"
+}
