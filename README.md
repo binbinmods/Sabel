@@ -1,6 +1,6 @@
 # Sabel, the Sufferer
 
-A hero mod, introducing Sabel, a ...
+A hero mod, introducing Sabel, a warrior specializing in hitting back after being attacked.
 
 This character was designed by @designer.
 

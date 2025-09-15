@@ -2,7 +2,7 @@
   "name": "Sabel_The_Sufferer",
   "version_number": "0.1.0",
   "website_url": "https://github.com/binbinmods/Sabel",
-  "description": "New Hero Mod for Sabel, the Sufferer. A new hero that specializes in x, y, and z",
+  "description": "New Hero Mod for Sabel, the Sufferer, a warrior specializing in hitting back after being attacked.",
   "dependencies": [
     "meds-Obeliskial_Content-1.5.6",
     "meds-Obeliskial_Essentials-1.5.0"

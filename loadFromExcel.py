@@ -139,6 +139,9 @@ def handle_traits(xls:pd.ExcelFile):
 if __name__=="__main__":
     xls = xls_to_excelfile()
 
+    os.makedirs(os.path.join(config_dir, "card"), exist_ok=True)
+    os.makedirs(os.path.join(config_dir, "sprite"), exist_ok=True)
+
     for sheet,sheet_dir in sheet_map.items():
         print(f"Handling {sheet}")
         output_dir = os.path.join(config_dir,sheet_dir)

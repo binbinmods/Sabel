@@ -5,7 +5,7 @@ schemaVersion = "0.1.0"
 namespace = "Binbin"
 name = "Sabel"
 versionNumber = "0.1.0"
-description = "Hero Mod for Sabel, the Sufferer. ..."
+description = "Hero Mod for Sabel, the Sufferer, a warrior specializing in hitting back after being attacked."
 websiteUrl = "https://github.com/binbinmods/Sabel"
 containsNsfwContent = false
 
