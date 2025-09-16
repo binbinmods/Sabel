@@ -73,19 +73,20 @@ namespace Sabel
             if (_trait == trait0)
             {
                 // trait0:
-                LogDebug($"Handling Trait {traitId}: {traitName}");
-                _character.SetAuraTrait(_character, "evade", 1);
+                // Handled in GetTraitAuraCurseModifiersPostfix
             }
 
 
             else if (_trait == trait2a)
             {
                 // trait2a
-                if (CanIncrementTraitActivations(traitId) && _castedCard.HasCardType(Enums.CardType.Defense))// && MatchManager.Instance.energyJustWastedByHero > 0)
+                // When Damaged by an enemy, deal 6 Blunt damage back to them (3x/turn). Note - This is 3 times per enemy
+                if (CanIncrementTraitActivations(traitId) && IsLivingNPC(_target))// && MatchManager.Instance.energyJustWastedByHero > 0)
                 {
                     LogDebug($"Handling Trait {traitId}: {traitName}");
-                    // _character?.ModifyEnergy(1);
-                    // DrawCards(1);
+                    // Character randomNPC = GetRandomCharacter(teamNpc);
+                    int damage = _character.DamageWithCharacterBonus(6, Enums.DamageType.Blunt, Enums.CardClass.Special);
+                    _target.IndirectDamage(Enums.DamageType.Blunt, damage);
                     IncrementTraitActivations(traitId);
                 }
             }
@@ -95,21 +96,36 @@ namespace Sabel
             else if (_trait == trait2b)
             {
                 // trait2b:
-                LogDebug($"Handling Trait {traitId}: {traitName}");
-
+                // When you play a Defense card that costs Energy, refund 1 and apply 1 Vitality to the most damaged hero. (3x/turn)
+                if (CanIncrementTraitActivations(traitId) && _castedCard.HasCardType(Enums.CardType.Defense) && MatchManager.Instance.energyJustWastedByHero > 0)
+                {
+                    LogDebug($"Handling Trait {traitId}: {traitName}");
+                    // Character randomNPC = GetRandomCharacter(teamNpc);
+                    Character mostDamaged = GetLowestHealthCharacter(teamNpc);
+                    _character.ModifyEnergy(1);
+                    mostDamaged.SetAuraTrait(_character, "vitality", 1);
+                    IncrementTraitActivations(traitId);
+                }
             }
 
             else if (_trait == trait4a)
             {
                 // trait 4a;
-
+                // At the start of every round, shuffle a \"Thump\" into each hero’s draw pile
                 LogDebug($"Handling Trait {traitId}: {traitName}");
+                ShuffleCardIntoAllDecks("suffererthump");
             }
 
             else if (_trait == trait4b)
             {
                 // trait 4b:
+                // When you damage an enemy, deal 3 Holy damage to yourself. This counts as being damaged by an enemy. 
                 LogDebug($"Handling Trait {traitId}: {traitName}");
+                if (_character.GetAuraCharges("block") < 3)
+                {
+                    _character.SetEvent(Enums.EventActivation.Damaged);
+                }
+                _character.IndirectDamage(Enums.DamageType.Holy, 3);
             }
 
         }
@@ -248,35 +264,24 @@ namespace Sabel
 
 
 
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(Character), nameof(Character.GetTraitAuraCurseModifiers))]
+        public static void GetTraitAuraCurseModifiersPostfix(ref Character __instance, ref Dictionary<string, int> __result)
+        {
+            // trait0 
+            // +1 Block and shield for every 10% missing hp.             
 
-        // [HarmonyPostfix]
-        // [HarmonyPatch(typeof(CardData), nameof(CardData.SetDescriptionNew))]
-        // public static void SetDescriptionNewPostfix(ref CardData __instance, bool forceDescription = false, Character character = null, bool includeInSearch = true)
-        // {
-        //     // LogInfo("executing SetDescriptionNewPostfix");
-        //     if (__instance == null)
-        //     {
-        //         LogDebug("Null Card");
-        //         return;
-        //     }
-        //     if (!Globals.Instance.CardsDescriptionNormalized.ContainsKey(__instance.Id))
-        //     {
-        //         LogError($"missing card Id {__instance.Id}");
-        //         return;
-        //     }
+            if (IsLivingHero(__instance) && __instance.HaveTrait(trait0))
+            {
+                LogDebug($"Executing Trait {trait0}");
+                float percentHP = __instance.GetHpPercent();
+                int bonusCharges = Mathf.FloorToInt((100 - percentHP) * 0.1f);
+                __result["block"] = bonusCharges;
+                __result["shield"] = bonusCharges;
+                // __result["fortify"] = bonusFortifyCharges;
+            }
 
-
-        //     if (__instance.CardName == "Mind Maze")
-        //     {
-        //         StringBuilder stringBuilder1 = new StringBuilder();
-        //         LogDebug($"Current description for {__instance.Id}: {stringBuilder1}");
-        //         string currentDescription = Globals.Instance.CardsDescriptionNormalized[__instance.Id];
-        //         stringBuilder1.Append(currentDescription);
-        //         // stringBuilder1.Replace($"When you apply", $"When you play a Mind Spell\n or apply");
-        //         stringBuilder1.Replace($"Lasts one turn", $"Lasts two turns");
-        //         BinbinNormalizeDescription(ref __instance, stringBuilder1);
-        //     }
-        // }
+        }
 
     }
 }

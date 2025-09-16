@@ -23,7 +23,7 @@
     "DamageBonusPercentValue": 0.0,
     "DamageBonusPercentValue2": 0.0,
     "DamageBonusPercentValue3": 0.0,
-    "Description": "When Damaged by an enemy, deal 6 Blunt damage to a random enemy (3x/turn). Note - This is 3 times per enemy",
+    "Description": "When Damaged by an enemy, deal 6 Blunt damage back to them (3x/turn). Note - This is 3 times per enemy",
     "HealFlatBonus": 0,
     "HealPercentBonus": 0.0,
     "HealReceivedFlatBonus": 0,
