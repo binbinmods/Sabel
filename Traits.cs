@@ -123,7 +123,7 @@ namespace Sabel
                 LogDebug($"Handling Trait {traitId}: {traitName}");
                 if (_character.GetAuraCharges("block") < 3)
                 {
-                    _character.SetEvent(Enums.EventActivation.Damaged);
+                    _character.SetEvent(Enums.EventActivation.Damaged, auxInt: 1);
                 }
                 _character.IndirectDamage(Enums.DamageType.Holy, 3);
             }

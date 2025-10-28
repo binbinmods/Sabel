@@ -562,7 +562,7 @@ namespace Sabel
                     }
                 }
             }
-            return (Hero)null;
+            return (Character)null;
         }
 
         /// <summary>
